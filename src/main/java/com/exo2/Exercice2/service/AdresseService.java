@@ -1,7 +1,5 @@
 package com.exo2.Exercice2.service;
-
 import com.exo2.Exercice2.dto.AdresseDto;
-import com.exo2.Exercice2.entity.Adresse;
 import com.exo2.Exercice2.mapper.AdresseMapper;
 import com.exo2.Exercice2.repository.AdresseRepository;
 import lombok.AllArgsConstructor;

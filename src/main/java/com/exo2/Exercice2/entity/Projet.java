@@ -7,9 +7,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
-@Table(name = "projet")
+@Table(name = "projet", indexes = {
+        @Index(name = "index_nom_projet", columnList = "nom_projet")
+}
+)
 @Data
+@BatchSize(size = 10)
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class Projet {
@@ -22,6 +29,7 @@ public class Projet {
     private String nomProjet;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 10)
     @JoinTable(name = "etudiant_projet", joinColumns = @JoinColumn(name = "projet_id"), inverseJoinColumns = @JoinColumn(name = "etudiant_id"))
     private List<Etudiant> etudiants;
 }

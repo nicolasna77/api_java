@@ -1,7 +1,6 @@
 package com.exo2.Exercice2.controller;
 
 import com.exo2.Exercice2.dto.EtudiantDto;
-import com.exo2.Exercice2.entity.Etudiant;
 import com.exo2.Exercice2.service.EtudiantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +16,11 @@ public class EtudiantController {
     private EtudiantService etudiantService;
 
     @GetMapping
-    public ResponseEntity<List<EtudiantDto>> findAll()
-    {
-        return ResponseEntity.ok(etudiantService.findAll());
+    public ResponseEntity<List<EtudiantDto>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<EtudiantDto> etudiants = etudiantService.findAll(page, size);
+        return ResponseEntity.ok(etudiants);
     }
 
     @GetMapping("/{id}")

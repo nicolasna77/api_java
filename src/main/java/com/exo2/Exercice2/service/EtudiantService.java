@@ -1,15 +1,17 @@
 package com.exo2.Exercice2.service;
-
 import com.exo2.Exercice2.dto.EtudiantDto;
 import com.exo2.Exercice2.entity.Etudiant;
 import com.exo2.Exercice2.mapper.EtudiantMapper;
 import com.exo2.Exercice2.repository.EtudiantRepository;
+import org.springframework.cache.annotation.Cacheable;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -18,8 +20,11 @@ public class EtudiantService {
     private final EtudiantRepository etudiantRepository;
     private final EtudiantMapper etudiantMapper;
 
-    public List<EtudiantDto> findAll() {
-        return etudiantMapper.toDtos(etudiantRepository.findAll());
+    @Cacheable(value = "etudiants", key = "#page + '_' + #size")
+    public List<EtudiantDto> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Etudiant> etudiantPage = etudiantRepository.findAll(pageable);
+        return etudiantMapper.toDtos(etudiantPage.getContent());
     }
 
     public EtudiantDto findById(Long id) {
